@@ -1,9 +1,9 @@
 export enum UserRole {
-  USER = 1,
+  USER = 0,
   ADMIN,
 }
 
 export enum UserState {
-  UNACTIVE = 1,
+  UNACTIVE = 0,
   ACTIVED,
 }
