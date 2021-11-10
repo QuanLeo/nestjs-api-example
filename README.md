@@ -17,3 +17,8 @@
   ```
     npm install --save @nestjs/swagger swagger-ui-express
   ```
+- TypeOrm:
+  - Document : https://typeorm.io/
+  ```
+    npm install --save typeorm mysql2 @nestjs/typeorm
+  ```
