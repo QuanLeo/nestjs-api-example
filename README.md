@@ -22,3 +22,8 @@
   ```
     npm install --save typeorm mysql2 @nestjs/typeorm
   ```
+- Jwt:
+  ```
+    npm install --save @nestjs/passport passport passport-jwt
+    npm install --save @types/passport-jwt @nestjs/jwt
+  ```
