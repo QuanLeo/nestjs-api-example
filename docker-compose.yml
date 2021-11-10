@@ -1,0 +1,59 @@
+version: "3.7"
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: ../docker/backend/Dockerfile
+    command: /bin/sh -c "npm install && npm run start:dev"
+    environment:
+      - TZ=Asia/Ho_Chi_Minh
+      - BACKEND_HOST=${BACKEND_HOST}
+      - BACKEND_PORT=${BACKEND_PORT}
+      - BACKEND_SALT=${BACKEND_SALT}
+      - APP_SECRET_KEY=${APP_SECRET_KEY}
+      - MYSQL_HOST=${MYSQL_HOST}
+      - MYSQL_PORT=${MYSQL_PORT}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MAIL_USER=${MAIL_USER}
+      - MAIL_PASSWORD=${MAIL_PASSWORD}
+    ports:
+      - ${BACKEND_PORT}:${BACKEND_PORT}
+    volumes:
+      - ./backend:/home/backend
+    links:
+      - db
+    networks:
+      - app-network
+  db:
+    image: mysql:5.7
+    command: --character-set-server=utf8mb4
+    environment:
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+    ports:
+      - ${MYSQL_PORT}:${MYSQL_PORT}
+    networks:
+      app-network:
+        aliases:
+          - ${MYSQL_HOST}
+  phpmyadmin:
+    image: phpmyadmin
+    links:
+      - db
+    ports:
+      - 8080:80
+    environment:
+      PMA_HOSTS: db
+      PMA_PORT: ${MYSQL_PORT}
+      PMA_USER: root
+      PMA_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    networks:
+      - app-network
+
+networks:
+  app-network:
