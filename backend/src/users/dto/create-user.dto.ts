@@ -23,11 +23,6 @@ export class CreateUserDto {
   @IsNotEmpty()
   password: string;
 
-  @ApiProperty({ example: 1 })
-  @IsOptional()
-  @IsNumber()
-  readonly role: number;
-
   @ApiProperty()
   @IsOptional()
   @IsString()

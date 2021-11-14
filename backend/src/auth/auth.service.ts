@@ -5,6 +5,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { passwordValid } from 'src/common/encryption';
 import { UsersService } from 'src/users/users.service';
 import { BasicAuthDto } from './dto/basic_auth.dto';
 
@@ -19,7 +20,7 @@ export class AuthService {
   async validateUser(basicAuthDto: BasicAuthDto) {
     const user = await this.userService.findByEmail(basicAuthDto.email);
 
-    if (user && basicAuthDto.password === user.password) {
+    if (user && (await passwordValid(basicAuthDto.password, user.password))) {
       return user;
     } else {
       throw new UnauthorizedException();

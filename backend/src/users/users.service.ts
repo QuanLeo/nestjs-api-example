@@ -5,6 +5,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { encryptPassowrd } from 'src/common/encryption';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -18,7 +19,9 @@ export class UsersService {
   ) {}
 
   async create(createUserDto: CreateUserDto) {
-    const user = this.userRepository.create(createUserDto);
+    const params = this.preCreate(createUserDto);
+    const user = this.userRepository.create(params);
+
     return await this.userRepository.save(user).catch((err) => {
       throw new HttpException(
         {
@@ -76,5 +79,12 @@ export class UsersService {
 
   async findByEmail(email: string) {
     return this.userRepository.findOne({ where: { email: email } });
+  }
+
+  preCreate(params: any = {}) {
+    return {
+      ...params,
+      password: encryptPassowrd(params.password),
+    };
   }
 }
