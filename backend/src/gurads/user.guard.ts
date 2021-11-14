@@ -19,7 +19,7 @@ export class UserGuard implements CanActivate {
     if (user.role === UserRole.ADMIN) return true;
 
     const params = request.params;
-    if (!params || params.id === undefined) return false;
+    if (!params || params.id === undefined) return true;
 
     return user.id === parseInt(params.id);
   }

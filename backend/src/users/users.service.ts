@@ -7,6 +7,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { encryptPassowrd } from 'src/common/encryption';
 import { Repository } from 'typeorm';
+import { ChangePasswordDto } from './dto/change-password.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
@@ -86,5 +87,19 @@ export class UsersService {
       ...params,
       password: encryptPassowrd(params.password),
     };
+  }
+
+  async changePassword(user: any, changePasswordDto: ChangePasswordDto) {
+    const encryptPass = encryptPassowrd(changePasswordDto.password);
+    user.password = encryptPass;
+
+    return await this.userRepository.save(user).catch((err) => {
+      throw new HttpException(
+        {
+          message: err.message,
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    });
   }
 }
