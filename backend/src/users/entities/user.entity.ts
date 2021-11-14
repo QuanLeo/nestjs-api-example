@@ -1,5 +1,5 @@
 import { Exclude } from 'class-transformer';
-import { UserRole, UserState } from 'src/constant';
+import { UserRole, UserState } from 'src/common/constant';
 
 import {
   Column,
@@ -30,16 +30,6 @@ export class User {
   @Column({ nullable: true })
   address?: string;
 
-  @Column({
-    type: 'enum',
-    enum: UserRole,
-    default: UserRole.USER,
-  })
-  role?: number;
-
-  @Column('json', { nullable: true }) //for optional
-  permission: object[];
-
   @Column({ nullable: true, default: '/default/images/default_avatar.jpg' })
   avatar?: string;
 
@@ -52,18 +42,19 @@ export class User {
   @Column({ nullable: true, default: null })
   phone_number?: string;
 
-  @Column({ nullable: true, default: 1 })
-  labor_contract?: number;
-
-  @Column({ type: 'float', nullable: true, default: 0.0 })
-  day_off?: number;
+  @Column({
+    type: 'enum',
+    enum: UserRole,
+    default: UserRole.USER,
+  })
+  role?: string;
 
   @Column({
     type: 'enum',
     enum: UserState,
     default: UserState.UNACTIVE,
   })
-  active?: number;
+  active?: string;
 
   @CreateDateColumn()
   created_at: Date;

@@ -1,6 +1,7 @@
 import { Injectable, NotAcceptableException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
+import isBlocked from 'src/common/user-helper';
 
 import { UsersService } from 'src/users/users.service';
 
@@ -15,8 +16,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: any) {
-    const user = this.userService.findOne(payload.uid);
-    if (!user) throw new NotAcceptableException();
+    const user = await this.userService.findOne(payload.uid);
+    if (!user || isBlocked(user)) throw new NotAcceptableException();
 
     return user;
   }

@@ -1,11 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  IsNotEmpty,
-  IsNumber,
-  IsString,
-  IsOptional,
-  IsArray,
-} from 'class-validator';
+import { IsNotEmpty, IsString, IsOptional } from 'class-validator';
 
 export class CreateUserDto {
   @ApiProperty({ example: 'admin' })
@@ -46,22 +40,4 @@ export class CreateUserDto {
   @IsOptional()
   @IsString()
   readonly phone_number: string;
-
-  @ApiProperty()
-  @IsOptional()
-  @IsArray()
-  readonly departments: any[];
-
-  @ApiProperty()
-  @IsOptional()
-  @IsNumber()
-  readonly labor_contract: number;
-
-  @IsOptional()
-  @IsNumber()
-  readonly day_off: number;
-
-  @IsOptional()
-  @IsNumber()
-  readonly active: number;
 }
